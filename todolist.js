@@ -1,40 +1,49 @@
 'use strict';
 
+const todos = [];
 const todobutton = document.getElementById('send-button');
 const todovalue = document.getElementById('todo-input');
 const todolist = document.getElementById('todolist');
 
 
-const addTask = task => {
-  const ListItem = document.createElement('li');
-  const WorkButton = document.createElement('button');
-  const RemoveButton = document.createElement('button');
-  let newRow = todolist.insertRow();
+const displayTodos = array => {
+  todolist.textContent = '';
+  array.forEach((task,number) => {
+    const WorkButton = document.createElement('input');
+    const RemoveButton = document.createElement('input');
+    const newRow = todolist.insertRow();
+    const indexCell = newRow.insertCell();
+    const taskCell = newRow.insertCell();
+    const statusCell = newRow.insertCell();
+    const removeCell = newRow.insertCell();
+  
+    todolist.insertRow();
 
-  todolist.insertRow();
+    indexCell.textContent = number;
 
-  let newCell = newRow.insertCell();
-  newCell.appendChild(ListItem);
+    taskCell.textContent = array[number].task;
+    
+    WorkButton.type = 'button';
+    WorkButton.value = array[number].status;
+    statusCell.appendChild(WorkButton);
 
-  newCell = newRow.insertCell();
-  let newText = document.createTextNode(task);
-  newCell.appendChild(newText);
-
-  newCell = newRow.insertCell();
-  WorkButton.textContent = '作業中';
-  newCell.appendChild(WorkButton);
-
-  newCell = newRow.insertCell();
-  RemoveButton.textContent = '削除';
-  newCell.appendChild(RemoveButton);
+    RemoveButton.type = 'button';
+    RemoveButton.value = '削除'
+    removeCell.appendChild(RemoveButton);
+    
+  })
 
 };
 
 todobutton.addEventListener('click', () => {
+  const todo = {};
   if(!todovalue.value){
     todovalue.value = '';
   } else {
   const task = todovalue.value;
-  addTask(task);
+  todo['task'] = task;
+  todo['status'] = '作業中'
+  todos.push(todo);
   todovalue.value = '';
+  displayTodos(todos);
 }});
